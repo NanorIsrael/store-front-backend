@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'playground',
-    'debug_toolbar'
+    'debug_toolbar',
+    'store',
+    'tags'
 ]
 
 MIDDLEWARE = [
@@ -51,9 +53,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 INTERNAL_IPS = [
     '127.0.0.1'
 ]
+
 ROOT_URLCONF = 'storefront.urls'
 
 TEMPLATES = [
