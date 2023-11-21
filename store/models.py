@@ -14,8 +14,8 @@ class Collection(models.Model):
 class Product(models.Model):
 	title = models.CharField(max_length=255)
 	slug = models.SlugField(null=True)
-	descriptions = models.TextField()
-	price = models.DecimalField(max_digits=6,  decimal_places=2)
+	description = models.TextField()
+	unit_price = models.DecimalField(max_digits=6,  decimal_places=2)
 	inventory = models.IntegerField() 
 	last_update = models.DateTimeField(auto_now=True)
 	collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
@@ -36,13 +36,7 @@ class Customer(models.Model):
 	email = models.EmailField(unique=True)
 	phone = models.CharField(max_length=20)
 	birth_date = models.DateTimeField(null=True)
-	membership_type = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
-
-	class Meta:
-		db_table = 'store_customers'
-		indexes = [
-			models.Index(fields=['last_name', 'first_name'])
-		]
+	membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
 
 
 class Order(models.Model):
@@ -52,15 +46,15 @@ class Order(models.Model):
 		('C', 'Complete'),
 		('F', 'Failed')
 	]
-	place_at = models.DateTimeField(auto_now_add=True)
-	membership_type = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default='P')
+	placed_at = models.DateTimeField(auto_now_add=True)
+	payment_status = models.CharField(max_length=1, choices=PAYMENT_CHOICES, default='P')
 	customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 
 
 class OrderItem(models.Model):
-	Order = models.ForeignKey(Order, on_delete=models.PROTECT)
+	order = models.ForeignKey(Order, on_delete=models.PROTECT)
 	product = models.ForeignKey(Product, on_delete=models.PROTECT)
-	quatity = models.PositiveSmallIntegerField()
+	quantity = models.PositiveSmallIntegerField()
 	unit_price = models.DecimalField(max_digits=6, decimal_places=2)
 
 
