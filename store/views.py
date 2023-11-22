@@ -13,10 +13,7 @@ def product_list(request):
 
 @api_view()
 def product_detail(request, id):
-	try:
-		product = Product.objects.get(pk=id)
-		serializer = ProductSerializer(product)
-		return Response(serializer.data);
-	except Product.DoesNotExist:
-		return Response(status=status.HTTP_404_NOT_FOUND)
-
+	product = getobject_or_404(Product, pk=id)
+	serializer = ProductSerializer(product)
+	return Response(serializer.data);
+	
