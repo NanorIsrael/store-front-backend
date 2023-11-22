@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from store.models import Order, OrderItem, Collection, Product
+from store.models import Order, OrderItem, Collection, Product, Customer
 from django.db.models.aggregates import Count, Sum, Min, Max, Avg
 
 
@@ -19,8 +19,15 @@ def say_hello(request):
 		average=Avg('unit_price')
 	)
 
+
 	print(query_set)
 	print(result2)
 	print(result3)
 	print(result4)
+
+	result5 =  Customer.objects.filter(email__icontains='.com')
+	result6 =  Collection.objects.filter(featured_product__isnull=True)
+	print(result5)
+	print(result6)
+
 	return render(request, 'hello.html')
