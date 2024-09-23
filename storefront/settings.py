@@ -90,8 +90,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'storefront',
         'HOST': 'localhost',
-        'USER': 'airflow',
-        'PASSWORD': environ.get('pass')
+        'USER': 'postgres',
+        'PASSWORD': 'Enigma.100'
     }
 }
 
