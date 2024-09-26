@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'store',
     'tags',
-    'likes'
+    'likes',
+	'common'
 ]
 
 MIDDLEWARE = [
@@ -88,11 +89,13 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'storefront',
-        'HOST': 'localhost',
-        'USER': 'postgres',
-        'PASSWORD': 'Enigma.100'
+        # 'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'storefront',
+        # 'HOST': 'localhost',
+        # 'USER': 'postgres',
+        # 'PASSWORD': 'Enigma.100'
+		"ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -137,3 +140,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'common.User'

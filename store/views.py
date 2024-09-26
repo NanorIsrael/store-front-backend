@@ -6,7 +6,8 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
 from .models import Product, OrderItem, Collection, Reviews, Cart, CartItem
-from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, CartItemSerializer
+from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer \
+	, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 # Create your views here.
 class CollectionViewSet(ModelViewSet):
 	queryset = Collection.objects.all()
@@ -41,10 +42,19 @@ class CartViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, Generi
 	serializer_class = CartSerializer
 
 class CartItemViewSet(ModelViewSet):
-	serializer_class = CartItemSerializer
+	http_method_names = ['get', 'post', 'patch', 'delete']
+	def get_serializer_class(self):
+		if self.request.method == 'POST':
+			return AddCartItemSerializer
+		if self.request.method == 'PATCH':
+			return UpdateCartItemSerializer
+		return CartItemSerializer
 
 	def get_queryset(self):
-		queryset = CartItem.objects \
-						.filter(self.kwargs['cart_pk']) \
-						.select_related('product')
+		print(self.kwargs)
+		# print(CartItemSerializer(CartItem.objects.all()[0]))
+		queryset = CartItem.objects.filter(cart_id=self.kwargs.get('cart_pk')).select_related('product')
 		return queryset
+
+	def get_serializer_context(self):
+		return {'cart_id': self.kwargs['cart_pk']}

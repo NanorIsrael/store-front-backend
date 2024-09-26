@@ -17,5 +17,11 @@ class ProductAdmin(admin.ModelAdmin):
 	def collection_title(self, product):
 		return product.collection.title
 
+
 # Register your models here.
-admin.site.register(models.Collection)
+# @admin.register(models.Collection)
+
+@admin.register(models.Customer)
+class CustomerAdmin(admin.ModelAdmin):
+	list_display = ['first_name', 'phone', 'birth_date' ]
+	list_select_related = ['user']
