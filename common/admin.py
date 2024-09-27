@@ -10,7 +10,7 @@ class UserAdmin(AdminUser):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("username", "password1", "password2", 'email', 'first_name', 'last_name'),
+                "fields": ("email", "password1", "password2", 'username', 'first_name', 'last_name'),
             },
         ),
     )

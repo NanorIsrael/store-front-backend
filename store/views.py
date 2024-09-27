@@ -1,13 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
-from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, UpdateModelMixin
-from .models import Product, OrderItem, Collection, Reviews, Cart, CartItem
+from .models import Product, OrderItem, Collection, Reviews, Cart, CartItem, Customer
 from .serializers import ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer \
-	, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
+	, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, CustomerSerializer
 # Create your views here.
 class CollectionViewSet(ModelViewSet):
 	queryset = Collection.objects.all()
@@ -58,3 +56,15 @@ class CartItemViewSet(ModelViewSet):
 
 	def get_serializer_context(self):
 		return {'cart_id': self.kwargs['cart_pk']}
+
+
+class CustomerViewSet(CreateModelMixin,RetrieveModelMixin,UpdateModelMixin, GenericViewSet):
+	queryset = Customer.objects.all()
+	serializer_class = CustomerSerializer
+
+	@action(detail=False, methods=['GET', 'PATCH'])
+	def me(self, request):
+		# query = Customer.objects.all()
+		query = Customer.objects.get(user_id=request.user.id)
+		customer = CustomerSerializer(query);
+		return Response(customer.data)
